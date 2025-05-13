@@ -1,3 +1,13 @@
+"""
+Current schemas:
+
+- [ ] Annotations
+- [ ] Complexes
+- [x] EnzymePTM
+- [ ] Intercell
+- [x] Networks
+"""
+
 from functools import lru_cache
 
 import pandas as pd
@@ -132,6 +142,104 @@ class EnzymePTMPanderaModel(BasePanderaModel):
     references: Series[str] = pa.Field(nullable=True)
     curation_effort: Series[int] = pa.Field(nullable=False)
     ncbi_tax_id: Series[int] = pa.Field(nullable=False)
+
+    # ---- DataFrame Model Configuration
+    class Config(BasePanderaModel.Config):
+        name = BASE_SCHEMA_NAME
+
+
+class IntercellPanderaModel(BasePanderaModel):
+    """Pandera DataFrame Model for Omnipath Intercell Table.
+    This schema defines the expected structure of the DataFrame
+    containing interaction data, ensuring type and constraint validation.
+
+    id = Column(Integer, primary_key = True)
+    category = Column(String)
+    parent = Column(String)
+    database = Column(String)
+    scope = Column(String)
+    aspect = Column(String)
+    source = Column(String)
+    uniprot = Column(String)
+    genesymbol = Column(String)
+    entity_type = Column(String)
+    consensus_score = Column(Integer)
+    transmitter = Column(Boolean)
+    receiver = Column(Boolean)
+    secreted = Column(Boolean)
+    plasma_membrane_transmembrane = Column(Boolean)
+    plasma_membrane_peripheral = Column(Boolean)
+
+
+    """
+
+    __slots__ = ()  # to avoid any possible dynamic creation of attributes (fields)
+
+    # ---- Column: Pandera datatype validator
+    category = Series[str] = pa.Field(nullable=False)
+    parent = Series[str] = pa.Field(nullable=False)
+    database = Series[str] = pa.Field(nullable=False)
+    scope = Series[str] = pa.Field(nullable=False)
+    aspect = Series[str] = pa.Field(nullable=False)
+    source = Series[str] = pa.Field(nullable=False)
+    uniprot = Series[str] = pa.Field(nullable=False)
+    genesymbol = Series[str] = pa.Field(nullable=False)
+    entity_type = Series[str] = pa.Field(nullable=False)
+    consensus_score = Series[int] = pa.Field(nullable=False)
+    transmitter = Series[bool] = pa.Field(nullable=False)
+    receiver = Series[bool] = pa.Field(nullable=False)
+    secreted = Series[bool] = pa.Field(nullable=False)
+    plasma_membrane_transmembrane = Series[bool] = pa.Field(nullable=False)
+    plasma_membrane_peripheral = Series[bool] = pa.Field(nullable=False)
+
+    # ---- DataFrame Model Configuration
+    class Config(BasePanderaModel.Config):
+        name = BASE_SCHEMA_NAME
+
+
+class ComplexesPanderaModel(BasePanderaModel):
+    """
+
+    name = Column(String)
+    components = Column(ARRAY(String))
+    components_genesymbols = Column(ARRAY(String))
+    stoichiometry = Column(String)
+    sources = Column(ARRAY(String))
+    references = Column(String)  # Could be array
+    identifiers = Column(String)  # Could be array
+    """
+
+    name = Series[str] = pa.Field(nullable=False)
+    components = Series[str] = pa.Field(nullable=False)
+    components_genesymbols = Series[str] = pa.Field(nullable=False)
+    stoichiometry = Series[str] = pa.Field(nullable=False)
+    sources = Series[str] = pa.Field(nullable=False)
+    references = Series[str] = pa.Field(nullable=False)
+    identifiers = Series[str] = pa.Field(nullable=False)
+
+    # ---- DataFrame Model Configuration
+    class Config(BasePanderaModel.Config):
+        name = BASE_SCHEMA_NAME
+
+
+class AnnotationsPanderaModel(BasePanderaModel):
+    """
+    uniprot = Column(String)
+    genesymbol = Column(String)
+    entity_type = Column(String)
+    source = Column(String)
+    label = Column(String)
+    value = Column(String)
+    record_id = Column(Integer)
+    """
+
+    uniprot = Series[str] = pa.Field(nullable=False)
+    genesymbol = Series[str] = pa.Field(nullable=False)
+    entity_type = Series[str] = pa.Field(nullable=False)
+    source = Series[str] = pa.Field(nullable=False)
+    label = Series[str] = pa.Field(nullable=False)
+    value = Series[str] = pa.Field(nullable=False)
+    record_id = Series[int] = pa.Field(nullable=False)
 
     # ---- DataFrame Model Configuration
     class Config(BasePanderaModel.Config):

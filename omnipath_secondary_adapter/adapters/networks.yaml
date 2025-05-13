@@ -190,6 +190,7 @@ transformers:
             - mirna_transcriptional
             - lncrna_post_transcriptional
             - small_molecule_protein
+    - map:
         column: dorothea
         to_property: dorothea
         for_objects:   
